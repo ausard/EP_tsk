@@ -21,7 +21,7 @@
 ├── <b>[Makefile](https://github.com/ausard/EP_tsk/blob/master/Makefile)</b> : main file for application management on Linux  
 ├── <b>[jenkins.bat](https://github.com/ausard/EP_tsk/blob/master/jenkins.bat)</b> : main file for application management on Windows  
 ├── scripts  
-│   └── <b>[System_select.sh](https://github.com/ausard/EP_tsk/blob/master/scripts/System_select.sh)</b> : script select version OS for VM  
+│   └── <b>[system_select.sh](https://github.com/ausard/EP_tsk/blob/master/scripts/system_select.sh)</b> : script select version OS for VM  
 ├── <b>[Vagrantfile](https://github.com/ausard/EP_tsk/blob/master/Vagrantfile)</b> : describe the type of machine required for a project  
 
 ----   
