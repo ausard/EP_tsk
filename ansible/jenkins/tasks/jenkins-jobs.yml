@@ -1,0 +1,100 @@
+- name: Install lib for jenkins ansible  
+  pip:
+    name: 
+    - python-jenkins
+    - lxml
+
+- name: Install plugin for Jenkins without authentication
+  jenkins_plugin:
+    name: "{{ item }}"
+    # url: http://localhost:8080
+    state: latest
+  with_items: 
+    - checkstyle
+    - pmd
+    - dashboard-view
+    - warnings-ng
+    - view-job-filters
+    - monitoring
+    - job-dsl
+    - build-pipeline-plugin
+    - jenkins-multijob-plugin
+    - workflow-aggregator
+    - antisamy-markup-formatter
+    - git
+    - github-pullrequest
+    - ace-editor
+    - build-name-setter
+    - build-timeout
+    - credentials
+    - copyartifact
+    - cloudbees-folder
+    - config-file-provider
+    - conditional-buildstep
+    - embeddable-build-status
+    - credentials-binding
+    - display-url-api
+    - git-client
+    - github
+    - jdk-tool
+    - junit
+    - parameterized-trigger
+    - pipeline-input-step
+    - pipeline-model-api
+    - pipeline-model-declarative-agent
+    - pipeline-rest-api 
+    - pipeline-stage-view
+    - scm-api
+    - script-security 
+    - ssh-credentials
+    - ssh-slaves
+    - structs
+    - ssh-agent
+    - rebuild
+    - msbuild
+    - ant
+    - ldap
+    - gradle
+    - nodejs
+    - cobertura
+    - htmlpublisher
+    - warnings
+    - xunit
+    - email-ext
+    - mailer
+    - ssh
+    - publish-over-ssh
+    - emailext-template
+    - active-directory
+    - role-strategy
+    - timestamper
+    - token-macro
+    - trilead-api
+    - workflow-job
+    - workflow-scm-step
+    - ws-cleanup
+    - workflow-support
+
+- name: Restart Jenkins service
+  service:
+    name: jenkins
+    state: restarted
+
+- name: Wait for Jenkins to start up
+  uri:
+    url: http://localhost:8080
+    status_code: "200"
+    timeout: 5
+  register: jenkins_service_status
+  # Keep trying for 5 mins in 5 sec intervals
+  retries: 60
+  delay: 5
+  until: >
+    'status' in jenkins_service_status and
+    jenkins_service_status['status'] == 200  
+
+- name: Create a jenkins job without authentication
+  jenkins_job:
+    config: "{{ lookup('file', 'jobs/job.xml') }}"
+    name: EP-tsk
+    url: http://localhost:8080

@@ -1,0 +1,42 @@
+# Setup/install tasks.
+---
+- name: Set timezone to Europe/Minsk
+  timezone:
+    name: Europe/Minsk
+
+- include_tasks: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- name: Enable and Start the Jenkins Service
+  service:
+    name: jenkins
+    enabled: yes
+    state: started
+
+- name: Copy config files for Jenkins from file
+  copy:
+    src: /vagrant/ansible/jenkins/config/config.xml
+    dest: /var/lib/jenkins/config.xml
+    mode: '0644'
+
+- name: Wait for Jenkins to start up
+  uri:
+    url: http://localhost:8080
+    status_code: "200"
+    timeout: 5
+  register: jenkins_service_status
+  # Keep trying for 5 mins in 5 sec intervals
+  retries: 60
+  delay: 5
+  until: >
+    'status' in jenkins_service_status and
+    jenkins_service_status['status'] == 200  
+ 
+- include_tasks: jenkins-jobs.yml
+
+- name: Print success Jenkins message
+  debug:
+    msg: "Open your browser at http://localhost:8080/"    
