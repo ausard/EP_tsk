@@ -1,6 +1,9 @@
 
 ## Troubleshooting Guide
 
+Problems can occur when installing Jenkins plugins if you have a poor internet connection.  
+This causes "Connection failure: timed out" errors. It is recommended that you repeat this action again.  
+
 <img src="https://github.com/ausard/EP_tsk/blob/master/docs/images/connection_failure.png">  
 <img src="https://github.com/ausard/EP_tsk/blob/master/docs/images/CSRF.png">  
 
